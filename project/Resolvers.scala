@@ -4,6 +4,6 @@ import Keys._
 
 object Resolvers {
   
-  val cloudera = "Cloudera Hadoop Releases" at "https://repository.cloudera.com/content/repositories/releases/"
+  val cloudera = "Cloudera Hadoop Releases" at "https://repository.cloudera.com/artifactory/cloudera-repos/"
 
 }
