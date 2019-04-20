@@ -1,8 +1,7 @@
-#Ym2R
-Yaml to reader
+#Config2source
+HOCON to spark source reader
 
-Create dataframe readers by yaml configuration.
-
+Create 
 
 Examples
 
@@ -19,6 +18,7 @@ source : directory
 type: csv
     header:
     separator:
+    
     
     
 future: JDBC    (we not necessarely want to pull remote sources)
