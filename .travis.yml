@@ -20,7 +20,7 @@ addons:
 
 
 script:
-  - sbt clean coverage test coverageReport
+  - sbt clean coverage test coverageAggregate coverageReport
   - sbt scalastyle scapegoat
   - sonar-scanner
 after_success:

@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2019 Matyas Kuti-Kreszacs
+ */
+
 package com.thecodewriter
 
 import com.thecodewriter.hocontosrc.SourceFormat.SourceFormat
