@@ -17,7 +17,7 @@ object SourceFormat extends Enumeration {
     * @param s
     * @return String representation of the enum
     */
-  implicit def srcFormatAsString(s:SourceFormat):String =
+  implicit def srcFormatToString(s:SourceFormat):String =
     s.toString
 }
 

@@ -11,8 +11,11 @@ import org.apache.spark.sql.{DataFrame, DataFrameReader, SparkSession}
 
 class SparkSource(config: Config) {
 
-  val spark = SparkSession.builder().enableHiveSupport().getOrCreate()
-  val src: DataFrame = configToSource(config).fold(l=>handleError(l), srcToDf)
+  lazy val spark = SparkSession.builder()
+    .master("local") //TODO: figure out how to make it configurable
+    .enableHiveSupport()
+    .getOrCreate()
+  val df: DataFrame = configToSource(config).fold(l => handleError(l), srcToDf)
 
   /**
     * Converts the Source object to DataFrame
@@ -22,7 +25,10 @@ class SparkSource(config: Config) {
     */
   implicit def srcToDf(source: Source): DataFrame = source.format.name match {
     case SourceFormat.table => spark.read.table(source.access)
-    case SourceFormat.csv => spark.read.option("delimiter", source.format.separator.getOrElse(",")).csv(source.access)
+    case SourceFormat.csv => spark.read
+      .option("delimiter", source.format.separator.getOrElse(","))
+      .option("header", "true")
+      .csv(source.access)
     case _: SourceFormat => spark.read.format(source.format.name).load(source.access)
   }
 
