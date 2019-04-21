@@ -5,7 +5,7 @@
 package com.thecodewriter.hocontosrc
 
 /**
-  * Supported
+  * Supported input sources
   */
 object SourceFormat extends Enumeration {
   type SourceFormat = Value
