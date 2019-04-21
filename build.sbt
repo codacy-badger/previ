@@ -35,6 +35,6 @@ lazy val ho2source = (project in file("ho2source"))
     Defaults.itSettings,
     buildSettings,
     resolvers += cloudera,
-    libraryDependencies ++= circe ++ scalatest, //commonDependencies,
+    libraryDependencies ++= spark ++ circe ++ scalatest, //commonDependencies,
     excludeDependencies += "eigenbase" % "eigenbase-properties"
   )
