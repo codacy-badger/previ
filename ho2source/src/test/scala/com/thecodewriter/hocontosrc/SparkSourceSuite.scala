@@ -24,11 +24,24 @@ class SparkSourceSuite extends FeatureSpec with GivenWhenThen {
           val sparkSource = SparkSource(config)
           Then("should provide a DataFrame with content")
           assert(sparkSource.df.count() > 0)
-          An
         }
       }
     }
     ///Test table input
+
+
+    scenario("Having a table config") {
+      val confFile = "configs/table_source.conf"
+      Given(s"$confFile file as config and the necessary table")
+      //Create test table
+      val config: Config = ConfigFactory.load(confFile).getConfig("source")
+      SparkSource(ConfigFactory.load("configs/csv_source.conf").getConfig("source")).
+        df.write.saveAsTable(config.getString("access"))
+      When(s"$config is mapped to the source")
+      val sparkSource = SparkSource(config)
+      Then("should provide a DataFrame with content")
+      assert(sparkSource.df.count() == 0)
+    }
 
     //Incomplete config
     val badScenarios = Seq(
