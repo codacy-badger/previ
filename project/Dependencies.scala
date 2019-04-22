@@ -7,16 +7,17 @@ object Dependencies {
   private val sparkScope = "provided"
 
   val spark: Seq[ModuleID] = Seq("core", "sql", "hive")
-    .map(l => "org.apache.spark" %% s"spark-$l" % sparkVersion % sparkScope)
+    .map(l => "org.apache.spark" %% s"spark-$l" % sparkVersion % sparkScope) ++
+    Seq("org.apache.spark" %% "spark-avro" % "2.4.0" % "compile")
 
   val sparktest: Seq[ModuleID] = Seq(
-    "com.holdenkarau" %% "spark-testing-base" % "2.3.0_0.10.0" % "it,test",
+    "com.holdenkarau" %% "spark-testing-base" % "2.4.0_0.11.0" % "it,test",
     "org.apache.spark" %% "spark-hive" % "2.0.0" % "it,test"
   )
   val scalatest: Seq[ModuleID] = Seq(
 
-      "org.scalatest" %% "scalatest" % "3.0.7" % Test,
-      "org.scalacheck" %% "scalacheck" % "1.14.0" % "test"
+    "org.scalatest" %% "scalatest" % "3.0.7" % Test,
+    "org.scalacheck" %% "scalacheck" % "1.14.0" % "test"
 
   )
 

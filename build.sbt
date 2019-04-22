@@ -2,15 +2,17 @@
 import Dependencies._
 import Resolvers._
 
+fork in Test := true
+parallelExecution in Test := false
 
 libraryDependencies ++= scalatest
-enablePlugins(Example)
+//enablePlugins(Example)
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
 
 
 lazy val buildSettings = Seq(
   organization := "com.thecodewriter",
-  scalaVersion := "2.11.11",
+  scalaVersion := "2.11.11"
   //doctestTestFramework := DoctestTestFramework.ScalaTest
 )
 
@@ -35,6 +37,6 @@ lazy val ho2source = (project in file("ho2source"))
     Defaults.itSettings,
     buildSettings,
     resolvers += cloudera,
-    libraryDependencies ++= circe ++ scalatest, //commonDependencies,
+    libraryDependencies ++= spark ++ circe ++ scalatest, //commonDependencies,
     excludeDependencies += "eigenbase" % "eigenbase-properties"
   )
