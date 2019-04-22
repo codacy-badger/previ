@@ -18,7 +18,6 @@ addons:
     organization: "thec0dewriter-github"
 
 
-
 script:
   - sbt clean coverage test coverageReport
   - sbt scalastyle scapegoat
@@ -26,3 +25,4 @@ script:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 sudo: false
+
