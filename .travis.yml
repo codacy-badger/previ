@@ -13,11 +13,13 @@ jdk:
 scala:
   - 2.11.8
 
+
 addons:
   sonarcloud:
     organization: "thec0dewriter-github"
 
-
+sbt_args:
+  -jvm-opts
 script:
   - sbt clean coverage test coverageReport
   - sbt scalastyle scapegoat
