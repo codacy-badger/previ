@@ -11,7 +11,7 @@ object Dependencies {
     Seq("org.apache.spark" %% "spark-avro" % "2.4.0" % "compile")
 
   val sparktest: Seq[ModuleID] = Seq(
-    "com.holdenkarau" %% "spark-testing-base" % "2.3.0_0.10.0" % "it,test",
+    "com.holdenkarau" %% "spark-testing-base" % "2.4.0_0.11.0" % "it,test",
     "org.apache.spark" %% "spark-hive" % "2.0.0" % "it,test"
   )
   val scalatest: Seq[ModuleID] = Seq(

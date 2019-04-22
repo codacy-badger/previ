@@ -5,9 +5,16 @@
 package com.thecodewriter.hocontosrc
 
 import com.typesafe.config.{Config, ConfigFactory}
+import org.apache.spark.sql.SparkSession
 import org.scalatest.{FeatureSpec, GivenWhenThen}
 
 class SparkSourceSuite extends FeatureSpec with GivenWhenThen {
+
+  val spark = SparkSession.builder()
+    .master("local") //TODO: figure out how to make it configurable
+    .config("hive.exec.scratchdir","~/tmp/hive")
+    .enableHiveSupport()
+    .getOrCreate()
 
   feature("Dataframe from HOCON config input") {
     val goodScenarios = Seq(
@@ -36,11 +43,11 @@ class SparkSourceSuite extends FeatureSpec with GivenWhenThen {
       //Create test table
       val config: Config = ConfigFactory.load(confFile).getConfig("source")
       SparkSource(ConfigFactory.load("configs/csv_source.conf").getConfig("source")).
-        df.write.saveAsTable(config.getString("access"))
+        df.createOrReplaceTempView(config.getString("access"))
       When(s"$config is mapped to the source")
       val sparkSource = SparkSource(config)
       Then("should provide a DataFrame with content")
-      assert(sparkSource.df.count() == 0)
+      assert(sparkSource.df.count() > 0)
     }
 
     //Incomplete config
