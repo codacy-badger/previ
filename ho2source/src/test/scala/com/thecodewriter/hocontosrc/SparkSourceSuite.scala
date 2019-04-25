@@ -12,7 +12,7 @@ class SparkSourceSuite extends FeatureSpec with GivenWhenThen {
   System.setSecurityManager(null)
   val spark = SparkSession.builder()
     .master("local") //TODO: figure out how to make it configurable
-    .config("hive.exec.scratchdir","~/tmp/hive")
+    .config("hive.exec.scratchdir", "~/tmp/hive")
     .enableHiveSupport()
     .getOrCreate()
 

@@ -26,17 +26,28 @@ lazy val root = (project in file("."))
     resolvers += cloudera,
     libraryDependencies ++= spark ++ circe ++ scalatest, //commonDependencies,
     excludeDependencies += "eigenbase" % "eigenbase-properties"
-  ).aggregate(ho2source)
+  ).aggregate(ho2source,ho2mapping)
 
 
 //partially inspired by http://rml.io/yarrrml/spec/
 lazy val ho2source = (project in file("ho2source"))
   .configs(IntegrationTest)
   .settings(
-    name := "HOCON 2 sparksource",
+    name := "HOCON to sparksource",
     Defaults.itSettings,
     buildSettings,
     resolvers += cloudera,
     libraryDependencies ++= spark ++ circe ++ scalatest, //commonDependencies,
     excludeDependencies += "eigenbase" % "eigenbase-properties"
   )
+
+lazy val ho2mapping = (project in file("ho2mapping"))
+  .configs(IntegrationTest)
+  .settings(
+    name := "HOCON to event source mapping",
+    Defaults.itSettings,
+    buildSettings,
+    resolvers += cloudera,
+    libraryDependencies ++= spark ++ circe ++ scalatest,
+    excludeDependencies += "eigenbase" % "eigenbase-properties"
+  ).dependsOn(ho2source)

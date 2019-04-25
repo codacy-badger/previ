@@ -5,17 +5,17 @@
 package com.thecodewriter.hocontosrc
 
 import com.thecodewriter.hocontosrc.SourceFormat._
-import com.typesafe.config.Config
+import com.typesafe.config.{Config, ConfigFactory}
 import io.circe.Error
-import org.apache.spark.sql.{DataFrame, DataFrameReader, SparkSession}
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
-class SparkSource(config: Config) {
+class SparkSource(config: Either[Error, Source]) {
 
   lazy val spark = SparkSession.builder()
     .master("local") //TODO: figure out how to make it configurable
     .enableHiveSupport()
     .getOrCreate()
-  val df: DataFrame = configToSource(config).fold(l => handleError(l), srcToDf)
+  val df: DataFrame = config.fold(handleError, srcToDf)
 
   /**
     * Converts the Source object to DataFrame
@@ -39,7 +39,9 @@ class SparkSource(config: Config) {
 }
 
 object SparkSource {
-  def apply(config: Config): SparkSource = new SparkSource(config)
+  def apply(config: Config): SparkSource = new SparkSource(configToSource(config))
+
+  def apply(source: Source): SparkSource = new SparkSource(Right(source))
 }
 
 
