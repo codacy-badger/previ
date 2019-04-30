@@ -20,8 +20,8 @@ class SparkEventSource(eventSource: Either[Error, EventSource]) { //extends
 
   implicit def srcToEventDf(sourceConfig: EventSource): Option[DataFrame] = {
     val df = SparkSource(sourceConfig.source).
-      df//.
-      //transform(eventMapper(sourceConfig.mapping))
+      df.
+      transform(eventMapper(sourceConfig.mapping))
     Some(df)
   }
 

@@ -6,15 +6,22 @@ package com.thecodewriter.hocontosrc
 
 import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.spark.sql.SparkSession
-import org.scalatest.{FeatureSpec, GivenWhenThen}
+import org.scalatest.{BeforeAndAfterAll, FeatureSpec, GivenWhenThen}
 
-class SparkSourceSuite extends FeatureSpec with GivenWhenThen {
-  System.setSecurityManager(null)
-  val spark = SparkSession.builder()
-    .master("local") //TODO: figure out how to make it configurable
-    .config("hive.exec.scratchdir", "~/tmp/hive")
-    .enableHiveSupport()
-    .getOrCreate()
+class SparkSourceSuite extends FeatureSpec with GivenWhenThen with BeforeAndAfterAll {
+
+  override def beforeAll() {
+    System.setSecurityManager(null)
+    val spark = SparkSession.builder()
+      .master("local")
+      .config("hive.exec.scratchdir", "~/tmp/hive")
+      .enableHiveSupport()
+      .getOrCreate()
+  }
+
+  override def afterAll() {
+    SparkSession.builder().getOrCreate().close()
+  }
 
   feature("Dataframe from HOCON config input") {
     val goodScenarios = Seq(

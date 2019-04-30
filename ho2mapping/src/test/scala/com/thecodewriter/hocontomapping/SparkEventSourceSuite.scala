@@ -1,20 +1,29 @@
-import com.thecodewriter.hocontomapping.SparkEventSource
-import com.thecodewriter.hocontosrc.SparkSource
-import com.typesafe.config.{Config, ConfigFactory}
-import org.scalatest.{FeatureSpec, GivenWhenThen}
+/*
+ * Copyright (C) 2019 Matyas Kuti-Kreszacs
+ */
+
+package com.thecodewriter.hocontomapping
 
 /*
  * Copyright (C) 2019 Matyas Kuti-Kreszacs
  */
 
+import com.typesafe.config.ConfigFactory
+import org.scalatest.{FeatureSpec, GivenWhenThen}
+
+
 class SparkEventSourceSuite extends FeatureSpec with GivenWhenThen {
 
   feature("Eventsource") {
     scenario(s"Having a  config") {
+      Given(s"A file as config")
       val conf = ConfigFactory.load("configs/json_event.conf").getConfig("event")
       println(conf)
+      When(s"config source is mapped to Source object")
       val s = SparkEventSource(conf)
+      Then(" should be Right and format should be ")
       s.eventDf.get.show(false)
+      s.eventDf.get.printSchema()
       assert(!conf.isEmpty)
     }
   }

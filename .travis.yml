@@ -20,9 +20,10 @@ addons:
 
 sbt_args:
   -jvm-opts
+
 script:
-  - sbt clean coverage test coverageReport
   - sbt scalastyle scapegoat
+  - sbt clean coverage test coverageReport
   - sonar-scanner
 after_success:
   - bash <(curl -s https://codecov.io/bash)

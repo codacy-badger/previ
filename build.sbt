@@ -1,21 +1,13 @@
 
 import Dependencies._
 import Resolvers._
-
-fork in Test := true
-parallelExecution in Test := false
+import Settings._
 
 libraryDependencies ++= scalatest
 //enablePlugins(Example)
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
+//libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
 
-
-lazy val buildSettings = Seq(
-  organization := "com.thecodewriter",
-  scalaVersion := "2.11.11"
-  //doctestTestFramework := DoctestTestFramework.ScalaTest
-)
-
+enablePlugins(SiteScaladocPlugin)
 
 lazy val root = (project in file("."))
   .configs(IntegrationTest)
@@ -26,7 +18,7 @@ lazy val root = (project in file("."))
     resolvers += cloudera,
     libraryDependencies ++= spark ++ circe ++ scalatest, //commonDependencies,
     excludeDependencies += "eigenbase" % "eigenbase-properties"
-  ).aggregate(ho2source,ho2mapping)
+  ).aggregate(ho2source, ho2mapping, spark_utils)
 
 
 //partially inspired by http://rml.io/yarrrml/spec/
@@ -48,6 +40,20 @@ lazy val ho2mapping = (project in file("ho2mapping"))
     Defaults.itSettings,
     buildSettings,
     resolvers += cloudera,
-    libraryDependencies ++= spark ++ circe ++ scalatest,
+    libraryDependencies ++= spark ++ circe ++ scalatest ++ sparktest,
     excludeDependencies += "eigenbase" % "eigenbase-properties"
-  ).dependsOn(ho2source)
+  ).dependsOn(ho2source, spark_utils)
+
+
+
+lazy val spark_utils = (project in file("spark-utils"))
+  .configs(IntegrationTest)
+  .settings(
+    name := "Spark helper functions",
+    Defaults.itSettings,
+    buildSettings,
+    resolvers += cloudera,
+    libraryDependencies ++= spark ++ scalatest ++ sparktest,
+    excludeDependencies += "eigenbase" % "eigenbase-properties"
+  )
+
